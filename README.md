@@ -922,3 +922,119 @@ $exiftool abimanyu.png
 <img src="assets/webserver/not_abimanyu_png.png">
 
 di sini kita bisa lihat walaupun namanya berbeda, spesifikasinya persis sama yang berarti yang didownlnoad merupakan file abimanyu.png
+
+## Bash Scripts
+Berikut adalah potongan script yang dijalankan oleh setiap node untuk merestore dan menjalankan segala instalasi dan konfigurasi yang telah dilakukan. Kuncinya adalah kami biasa membackup folder inti seperti `/etc/bind`, `/etc/nginx`, `/etc/apache2`, `/var/www` ke root agar tidak hilang ketika project GNS3 ditutup. Semua script berikut dipanggil di `/root/.bashrc`.
+
+> _Script Yudhistira_
+
+```bash
+echo nameserver 192.168.122.1 > /etc/resolv.conf
+
+apt-get update
+apt-get install bind9 -y
+cp -r -f /root/dns/bind /etc/
+service bind9 restart
+```
+
+> _Script Werkudara_
+
+```bash
+echo nameserver 192.168.122.1 > /etc/resolv.conf
+
+apt-get update
+apt-get install bind9 -y
+cp -r -f /root/dns/bind /etc/
+service bind9 restart
+```
+
+> _Script Arjuna_
+
+```bash
+echo nameserver 192.168.122.1 > /etc/resolv.conf
+
+apt-get update
+apt-get install nginx -y
+service nginx start
+cp -r -f /root/arjunalb/nginx /etc
+service nginx restart
+```
+
+> _Script Abimanyu_
+
+```bash
+echo nameserver 192.168.122.1 > /etc/resolv.conf
+
+cp -rf ~/webserver/www /var
+
+apt-get update && apt-get install nginx php php-fpm apache2 libapache2-mod-php7.0 -y
+service nginx start
+cp -r -f /root/webserver/nginx /etc
+service php7.0-fpm start
+service php7.0-fpm restart
+rm -rf /etc/nginx/sites-enabled/default
+service nginx restart
+
+cp -rf ~/webserver/apache2 /etc
+a2ensite abimanyu.d15.conf
+a2ensite parikesit.d15.conf
+a2ensite rjp.baratayuda.abimanyu.d15.conf
+
+htpasswd -bc /etc/apache2/.htpasswd Wayang baratayudad15
+
+a2enmod authn_core authz_core authn_file authz_user rewrite
+
+service apache2 restart
+```
+
+> _Script Prabakusuma_
+
+```bash
+echo nameserver 192.168.122.1 > /etc/resolv.conf
+
+apt-get update && apt install nginx php php-fpm -y
+service nginx start
+cp -r -f /root/webserver/nginx /etc
+cp -r -f /root/webserver/www /var
+service php7.0-fpm start
+service php7.0-fpm restart
+rm -rf /etc/nginx/sites-enabled/default
+service nginx restart
+```
+
+> _Script Wisanggeni_
+
+```bash
+echo nameserver 192.168.122.1 > /etc/resolv.conf
+
+apt-get update && apt install nginx php php-fpm -y
+service nginx start
+cp -r -f /root/webserver/nginx /etc
+cp -r -f /root/webserver/www /var
+service php7.0-fpm start
+service php7.0-fpm restart
+rm -rf /etc/nginx/sites-enabled/default
+service nginx restart
+```
+
+> _Script Nakula_
+
+```bash
+echo 'nameserver 10.29.2.2
+nameserver 10.29.2.3 ' > /etc/resolv.conf
+
+apt-get update -y
+apt-get install dnsutils -y
+apt-get install lynx -y
+```
+
+> _Script Sadewa_
+
+```bash
+echo 'nameserver 10.29.2.2
+nameserver 10.29.2.3 ' > /etc/resolv.conf
+
+apt-get update -y
+apt-get install dnsutils -y
+apt-get install lynx -y
+```
